@@ -31,6 +31,8 @@ const List = ({ navigation }) => {
     // state를 갱신 -> 재렌더링
     setList(result.data);
   }, [])
+
+
   // useEffect: 특정 조건일 때, 실행하는 함수 정의. componentDidMount(event hook)-컴포넌트가 마운트 됐을때 함수 정의
    
   // , [] 컴포넌트가 처음 마운트 됐을 때 실행되는 함수 정의
@@ -38,8 +40,6 @@ const List = ({ navigation }) => {
   // useEffect(() => {
   //   getList();
   // }, []) 
-
-  
   useEffect(() => {
     // navigation 이벤트 리스너를 생성
     // 반환 값이 이벤트 리스너 해제 함수
