@@ -20,27 +20,39 @@ const List = ({ navigation }) => {
 
   // 백엔드에 API요청후 응답 받은 데이터
   // 데이터를 받으면 화면 재렌더링하여 state처리
+  console.log('?')
   const [list, setList] = useState([]);
-  
-  // [] < 컴포넌트가 처음 마운트 됐을 때만 생성
+  console.log('??')
+  // [] < 컴포넌트가 App.js에 처음 마운트 됐을 때만 생성
   // [] 생략시 재렌더링시마다 함수 재생성
   // memoizing function: []안의 객체 또는 변수가 생성되거나 바뀔때 함수가 생성
+  // 컴포넌트가 새로 마운트 됐을때 데이터를 호출시킬 것이기 때문에
+
+  // useCallback(function(), [xxx]): 특정 조건에서 생성되는 함수를 만들 때 쓰는 hook
+  // useCallback(function(), []): 컴포넌트가 처음 마운트 될 때, 함수 생성
+  // useCallback(function(), [data]): data(변수, 객체)가 생성 혹은 수정될 때, 함수 생성
   const getList = useCallback(async () => {
     const result = await api.list();
-    console.log(result.data);
+    console.log('2-useCallback')
+    // console.log(result.data);
     // state를 갱신 -> 재렌더링
     setList(result.data);
   }, [])
+  console.log('???')
 
+  // componentDidMount(event hook)-컴포넌트가 마운트 됐을때 함수 정의
 
-  // useEffect: 특정 조건일 때, 실행하는 함수 정의. componentDidMount(event hook)-컴포넌트가 마운트 됐을때 함수 정의
+  // useEffect(function(), [xxx]): 특정 조건에서 실행하는 함수를 만들 때 쓰는 hook
+  // useEffect(function(), []): 컴포넌트가 처음 마운트 될 때, 함수 실행
+  // useEffect(function(), [data]): data(변수, 객체)가 생성 혹은 수정될 때, 함수 실행
    
-  // , [] 컴포넌트가 처음 마운트 됐을 때 실행되는 함수 정의
-  // , [data] : data라는 객체 또는 변수가 생성되거나 바뀔 때 함수 살행
   // useEffect(() => {
+  //   console.log('1-useEffect')
   //   getList();
   // }, []) 
+  console.log('????')
   useEffect(() => {
+    console.log('$$$')
     // navigation 이벤트 리스너를 생성
     // 반환 값이 이벤트 리스너 해제 함수
     const unsubscribe = navigation.addListener(
@@ -73,8 +85,16 @@ const List = ({ navigation }) => {
           { flexGrow:1, alignItems:"center", justifyContent:"center"}}
       >
         {
-          list.map((item, i) => (
-           <ListItem 
+          [1,2,3,4].map((item, i) => {
+            console.log('0')
+          return <Text key={i}>{item}</Text>})
+        }
+
+
+        {
+          list.map((item, i) => {
+            console.log('3')
+           return <ListItem 
             containerStyle={{width:"80%"}} 
             key={i}
             // stack -> stack 
@@ -92,7 +112,7 @@ const List = ({ navigation }) => {
                <ListItem.Subtitle>{item.subtitle}</ListItem.Subtitle>
              </ListItem.Content>
             </ListItem>
-          ))
+          })
         }
       </ScrollView>
     </View>
