@@ -1,0 +1,12 @@
+{
+  "name": "react-native-lecture-note",
+  "displayName": "react-native-lecture-note",
+  "expo": {
+    "name": "react-native-lecture-note",
+    "slug": "react-native-lecture-note",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
