@@ -13,16 +13,18 @@ import api from '../api/list'
 // JSX를 쓸려면 import React from 'react';
 // Navigator로 화면을 이동할 때 컴포넌트 속성으로 전달됨
 const List = ({ navigation }) => {
-
+  console.log('================== LIST TAB ==================')
+  // console.log(navigation);
   // 통신 없이 했던 코드
   // const list = LISTDATA;
   // console.log(list);
 
   // 백엔드에 API요청후 응답 받은 데이터
   // 데이터를 받으면 화면 재렌더링하여 state처리
-  console.log('?')
+  console.log('1')
   const [list, setList] = useState([]);
-  console.log('??')
+  console.log('2')
+
   // [] < 컴포넌트가 App.js에 처음 마운트 됐을 때만 생성
   // memoizing function: []안의 객체 또는 변수가 생성되거나 바뀔때 함수가 생성
   // 컴포넌트가 새로 마운트 됐을때 데이터를 호출시킬 것이기 때문에
@@ -32,12 +34,12 @@ const List = ({ navigation }) => {
   // useCallback(function(), [data]): data(변수, 객체)가 생성 혹은 수정될 때, 함수 생성
   // useCallback(function()): 컴포넌트 렌더링 될때마다 계속 함수 생성
   const getList = useCallback(async () => {
+    console.log('useCallback')
     const result = await api.list();
-    console.log('2-useCallback')
     // state를 갱신 -> 재렌더링
     setList(result.data);
   }, [])
-  console.log('???')
+  console.log('3')
 
  
 
@@ -51,33 +53,36 @@ const List = ({ navigation }) => {
   //   console.log('1-useEffect')
   //   getList();
   // }, []) 
-  console.log('????')
   useEffect(() => {
-    console.log('$$$')
-    // navigation 이벤트 리스너를 생성
-    // 반환 값이 이벤트 리스너 해제 함수
-    const unsubscribe = navigation.addListener(
-      'focus',
-      () => {
-        console.log('focus')
-        getList();
-      }
-    )
+  console.log('useEffect')
+  // navigation 이벤트 리스너를 생성
+  // navigation.addListener(현재 네비게이션에 'focus'이벤트가 발생했을때, 호출되는 함수)
+  // 반환 값: 이벤트 리스너 해제하는 함수
+  const unsubscribe = navigation.addListener( //useEeffect로 이벤트 리스너 등록
+    'focus',
+    () => {                   // 등록되는 이벤트 리스너 함수
+      console.log('focus')
+      getList();
+    }
+  )
+  console.log('4')
+  // useEffect(() => {
+  //   ...
+  //  return 함수 <- clean-up function(객체소멸함수), 이 훅(useEffect)이 갱신될 때, 함수가 실행(그렇게 되도록 예약 거는듯)
+  // }, [])       
+  // 마운트 시, 실행([])이므로, 이 때는 componenet가 unmmount 되는 시점에 clean-up 함수가 실행됨
 
-    // clean-up function
-    // 객체소멸 함수
-    // useEffect(() =>{
-    //    ...
-    //   return 함수
-    // }, []) 
-
-    // componenet가 unmmount 되는 시점에 clean-up 함수가 실행됨
-
-
-    return unsubscribe;
-    // return () => { navigation.removelistener(unsubscribe);}
-
+  // 객체소멸 함수 -> 다음에 useEffect가 실행되어 이벤트 리스너 생성 전에 실행되도록 예약을 검
+  return unsubscribe;
+  // return () => { navigation.removelistener(unsubscribe);} 과 같음
   }, [navigation])
+  // 1. navigation 객체의 생성 혹은 수정 -> useEffect실행
+  // 2. 예약된 return unsubscribe 실행: 기존의 존재하는 이벤트 리스너 해제
+  // 3. useEffect 함수 첫부분 navigation.addListener으로 이벤트 리스너 생성하여 getList()실행
+
+  // stack navigator: stack이 사라지면 컴포넌트 자체가 날라가므로, 다시 stack으로 진입하면 mount됨. useEffect(f,[])
+  // tab navigator: 컴포넌트가 mount 된 상태로 유지되므로 useEffect(f,[navigation])사용
+  console.log('5')
 
   return (
     <View style={{flex: 1}}>
@@ -87,14 +92,14 @@ const List = ({ navigation }) => {
       >
         {
           [1,2,3,4].map((item, i) => {
-            console.log('0')
+            console.log('+')
           return <Text key={i}>{item}</Text>})
         }
 
 
         {
           list.map((item, i) => {
-            console.log('3')
+            console.log('-')
            return <ListItem 
             containerStyle={{width:"80%"}} 
             key={i}
@@ -114,6 +119,11 @@ const List = ({ navigation }) => {
              </ListItem.Content>
             </ListItem>
           })
+        }
+        {
+          [1].map((item, i) => {
+            console.log('--------------- 렌더링 종료 ---------------')
+          return <Text key={i}>{item}</Text>})
         }
       </ScrollView>
     </View>

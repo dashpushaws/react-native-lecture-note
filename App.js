@@ -23,11 +23,11 @@ import rootReducer from './redux/reducers'
 
 const store = createStore(rootReducer)
 
-const Tab = createBottomTabNavigator();
-const ListStack = createStackNavigator();
+const Tab = createBottomTabNavigator(); // Tab Navigator 생성
+const ListStack = createStackNavigator(); // Stack Navigator 생성
 const HomeStack = createStackNavigator();
 const TaskStack = createStackNavigator();
-
+// Tab or Stack Navigator 사이의 컴포넌트는 navigation 객체를 속성으로 내려 받는다
 const HomeStackScreen = () => {
   return (
     <HomeStack.Navigator>
@@ -39,7 +39,7 @@ const HomeStackScreen = () => {
 
 const ListStackScreen = () => {
   return (
-    <ListStack.Navigator>
+    <ListStack.Navigator> 
       <ListStack.Screen name="List" component={List} options={{title:"List", headerTitleAlign:"center"}} />
       <ListStack.Screen name="Details" component={Details} options={{title:"Details", headerTitleAlign:"center"}}  />
     </ListStack.Navigator>
@@ -48,7 +48,7 @@ const ListStackScreen = () => {
 
 const TaskStackScreen = () => {
   return (
-    <TaskStack.Navigator>
+    <TaskStack.Navigator> 
       <TaskStack.Screen name="Tasks" component={Tasks} options={{title:"Tasks", headerTitleAlign:"center"}} />
       <TaskStack.Screen name="Details" component={Details} options={{title:"Details", headerTitleAlign:"center"}}  />
     </TaskStack.Navigator>
@@ -95,7 +95,7 @@ export default function App() {
     <Provider store={store}>
       <SafeAreaProvider>
         <NavigationContainer>
-          <Tab.Navigator screenOptions={screenOptions} tabBarOptions={tabBarOptions}>
+          <Tab.Navigator screenOptions={screenOptions} tabBarOptions={tabBarOptions}> 
             <Tab.Screen name="Home" component={HomeStackScreen} />
             <Tab.Screen name="List" component={ListStackScreen} />
             <Tab.Screen name="Tasks" component={TaskStackScreen} />

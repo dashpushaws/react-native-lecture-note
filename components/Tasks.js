@@ -9,11 +9,12 @@ import { removeTask } from '../redux/actions/tasks'
 const Tasks = ({route, navigation}) => {
 
   console.log("-- route.params --");
-  console.log(route.params);
+  // console.log(navigation)
+  // console.log(route.params);
 
   const tasks = useSelector(state => state.tasks);
-  console.log("--tasks state in Tasks Component");
-  console.log(tasks);
+  // console.log("--tasks state in Tasks Component");
+  // console.log(tasks);
 
   const dispatch = useDispatch();
 

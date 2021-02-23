@@ -14,7 +14,7 @@ import api from '../api/list'
 // JSX를 쓸려면 import React from 'react';
 // Navigator로 화면을 이동할 때 컴포넌트 속성으로 route, navigation이 전달됨
 const Details = ( { route, navigation }) => {
-
+  console.log('&&&&&&&&&&&&&&&&&& DETAILS TAB &&&&&&&&&&&&&&&&&&')
   // navigation.navigate("스크린이름", 매개변수)
   console.log("--detail");
   console.log(route.params);  // navigate로 넘어온 매개변수
@@ -38,7 +38,9 @@ const Details = ( { route, navigation }) => {
   const isExistedTask = tasks.filter(item => item.id == id).length > 0 ? true : false;
   console.log("--isExistedTask--");
   console.log(isExistedTask);
-
+// 뷰는 바인딩 된 데이터가 업데이트 시, 그것만 재렌더링
+// 리엑튼-네이티브는 state가 업데이트되면, 그 state가 있는 컴포넌트
+// 전부가 리렌더링 -> 컴포넌트를 가능한 작게 만든다
   const getDetails = useCallback(async () => {
     const result = await api.get(id);
     console.log(result.data);
